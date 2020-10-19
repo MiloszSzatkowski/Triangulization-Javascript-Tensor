@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Triangulation</title>
+</head>
+
+<body>
+    <div>
+        <div class="inputoutput">
+            <img id="imageSrc" alt="No Image" />
+            <div class="caption">imageSrc <input type="file" id="fileInput" name="file" /></div>
+
+            <label for="blur">Blur ratio:</label>
+
+            <select id="blur">
+                <option value="5">3</option>
+                <option value="10">5</option>
+                <option value="15">15</option>
+            </select>
+
+            <input type="text" name="" id="" value="" />
+            <input type="text" name="" id="" value="" />
+
+
+        </div>
+        <div class="inputoutput">
+            <canvas id="canvasOutput"></canvas>
+            <canvas id="canvasOutput_2"></canvas>
+            <canvas id="canvasOutput_3"></canvas>
+
+            <canvas id="canvasOutput_4"></canvas>
+
+
+            <div class="caption">canvasOutput</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+
+    <script src="test.js"> </script>
+
+    <script async src="https://docs.opencv.org/3.4.0/opencv.js" onload="" type="text/javascript"></script>
+
+</body>
+</html>
