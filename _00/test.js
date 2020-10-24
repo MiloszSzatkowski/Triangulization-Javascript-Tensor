@@ -80,9 +80,12 @@ imgElement.onload =  async function () {
       let index = (x + y * line_image.cols);
       let element = line_image.data[index];
       if (element !== 0) {
-        if (index % 2 == 0) {
+        if (index % 4 == 0) {
           canny_array.push([x,y]);
         }
+      }
+      if (index % 200 == 0) {
+        canny_array.push([x,y]);
       }
     }
   }
@@ -98,30 +101,28 @@ imgElement.onload =  async function () {
   var coordinates = [];
   var triangles = delaunay.triangles;
 
-  console.log(delaunay);
-  console.log(triangles);
+  // console.log(delaunay);
+  // console.log(triangles);
 
   var canvasElement = document.querySelector("#canvasOutput");
   var context = canvasElement.getContext("2d");
   context.canvas.width  = tensor_width;
   context.canvas.height = tensor_height;
 
-  console.log(canvasElement);
+  console.log(triangles.length);
+  console.log(canny_array.length);
 
   for (let i = 0; i < triangles.length; i += 3) {
     let coord = [
-        canny_array[i],
-        canny_array[i + 1],
-        canny_array[i + 2]
+        canny_array[triangles[i]],
+        canny_array[triangles[i + 1]],
+        canny_array[triangles[i + 2]]
         ];
     coordinates.push(coord);
     draw_triangle(context, coord);
-    if (i===0) {
-      console.log(coord);
-    }
   }
 
-  // console.log(coordinates);
+  console.log(coordinates);
 
   // cv.imshow('canvasOutput', resized);
   // cv.imshow('canvasOutput_2', dst);
@@ -132,11 +133,11 @@ imgElement.onload =  async function () {
     context.lineTo(arr[1][0], arr[1][1]);
     context.lineTo(arr[2][0], arr[2][1]);
     context.closePath();
-    context.lineWidth = 10;
+    context.lineWidth = 1;
     context.strokeStyle = '#666666';
     context.stroke();
-    context.fillStyle = "#FFCC00";
-    context.fill();
+    // context.fillStyle = "#FFCC00";
+    // context.fill();
   }
 
   // src.delete();
