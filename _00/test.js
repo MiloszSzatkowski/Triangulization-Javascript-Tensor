@@ -1,5 +1,6 @@
 //checking performance
 console.time('timeElapsed');
+// const Delaunator = require('delaunator');
 
 function resize(image, width, height, d_width, action) {
 
@@ -69,10 +70,8 @@ imgElement.onload =  async function () {
 
   cv.Canny(dst, line_image, 50, 100, 3, true);
 
-  console.log(line_image);
-  console.log(line_image.data);
-  console.log(line_image.data[200]);
-  console.log(line_image.data.length);
+  console.log(line_image.cols);
+  console.log(line_image.rows);
 
   var canny_array = [];
 
@@ -82,16 +81,63 @@ imgElement.onload =  async function () {
       let element = line_image.data[index];
       if (element !== 0) {
         if (index % 2 == 0) {
-          canny_array.push([x,y].toString());
+          canny_array.push([x,y]);
         }
       }
     }
   }
 
-  console.log(canny_array);
+  //add boundaries
+  canny_array.push([0,0]);
+  canny_array.push([0,line_image.cols]);
+  canny_array.push([line_image.rows,0]);
+  canny_array.push([line_image.rows,line_image.cols]);
 
-  cv.imshow('canvasOutput', resized);
-  cv.imshow('canvasOutput_2', dst);
+
+  const delaunay = Delaunator.from(canny_array);
+  var coordinates = [];
+  var triangles = delaunay.triangles;
+
+  console.log(delaunay);
+  console.log(triangles);
+
+  var canvasElement = document.querySelector("#canvasOutput");
+  var context = canvasElement.getContext("2d");
+  context.canvas.width  = tensor_width;
+  context.canvas.height = tensor_height;
+
+  console.log(canvasElement);
+
+  for (let i = 0; i < triangles.length; i += 3) {
+    let coord = [
+        canny_array[i],
+        canny_array[i + 1],
+        canny_array[i + 2]
+        ];
+    coordinates.push(coord);
+    draw_triangle(context, coord);
+    if (i===0) {
+      console.log(coord);
+    }
+  }
+
+  // console.log(coordinates);
+
+  // cv.imshow('canvasOutput', resized);
+  // cv.imshow('canvasOutput_2', dst);
+
+  function draw_triangle(context, arr) {
+    context.beginPath();
+    context.moveTo(arr[0][0], arr[0][1]);
+    context.lineTo(arr[1][0], arr[1][1]);
+    context.lineTo(arr[2][0], arr[2][1]);
+    context.closePath();
+    context.lineWidth = 10;
+    context.strokeStyle = '#666666';
+    context.stroke();
+    context.fillStyle = "#FFCC00";
+    context.fill();
+  }
 
   // src.delete();
   // dst.delete();
