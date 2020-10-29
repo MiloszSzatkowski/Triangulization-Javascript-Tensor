@@ -20,29 +20,49 @@
                 <option value="15">15</option>
             </select>
 
-            <input type="text" name="" id="" value="" />
-            <input type="text" name="" id="" value="" />
+            <label for="cor">Corelation value:</label>
+            <input id="cor" type="text" name=""  value="10" accept="number"/>
 
+            <label for="cor">Noise:</label>
+            <input id="noise" type="text" name=""  value="10000" accept="number"/>
+
+            <button id="execute" type="button" name="button">Repaint</button>
 
         </div>
         <div class="inputoutput">
+
             <canvas id="canvasOutput"></canvas>
-            <canvas id="canvasOutput_2"></canvas>
-            <canvas id="canvasOutput_3"></canvas>
-
-            <canvas id="canvasOutput_4"></canvas>
-
 
             <div class="caption">canvasOutput</div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
-    <script src="https://unpkg.com/delaunator@4.0.1/delaunator.min.js"></script>
-    
-    <script src="test.js"> </script>
+    <canvas id="canvasInput"></canvas>
+
+    <script type="text/javascript">
+
+    var corel_input = document.getElementById('cor');
+
+    corel_input.addEventListener('change', (e) => {
+      setInputFilter(corel_input)
+    }, false);
+
+
+    function setInputFilter(element) {
+      if (/^\d*\.?\d*$/.test(element.value) === false) {
+        element.value = '';
+      }
+    };
+    </script>
 
     <script async src="https://docs.opencv.org/3.4.0/opencv.js" onload="" type="text/javascript"></script>
+
+    <script src="delanutor.min.js"></script>
+
+    <script src="tracking-min.js"> </script>
+
+    <script src="test.js"> </script>
+
 
 </body>
 </html>
